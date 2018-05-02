@@ -1,81 +1,53 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
-import { SignUpLink } from '../SignUp';
-import { PasswordForgetLink } from '../PasswordForget';
-import { auth } from '../../firebase';
 import * as routes from '../../constants/routes';
+import { auth, provider } from '../../firebase/firebase';
+import { db } from '../../firebase';
+import * as firebase from 'firebase';
 
 const updateByPropertyName = (propertyName, value) => () => ({
   [propertyName]: value,
 });
 
-const INITIAL_STATE = {
-  email: '',
-  password: '',
-  error: null,
-};
-
 class SignInForm extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { ...INITIAL_STATE };
+    
+    this.state = {
+      user: null
+    }
   }
 
-  onSubmit = (event) => {
-    const {
-      email,
-      password,
-    } = this.state;
+  async login() {
+    const result = await auth.signInWithPopup(provider)
+    this.setState({user: result.user});
+    db.doCreateUser(result.user.uid, result.user.displayName, result.user.email)
+  }
 
-    const {
-      history,
-    } = this.props;
+  async logout() {
+    await auth.signOut()
+    this.setState({user: null});
+  }
 
-    auth.doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState(() => ({ ...INITIAL_STATE }));
-        history.push(routes.HOME);
-      })
-      .catch(error => {
-        this.setState(updateByPropertyName('error', error));
-      });
-
-    event.preventDefault();
+  async componentWillMount() {
+      const user = await auth.onAuthStateChanged((user) => {
+        if(this.state.user) this.setState({user})
+      }
+    );
   }
 
   render() {
-    const {
-      email,
-      password,
-      error,
-    } = this.state;
-
-    const isInvalid =
-      password === '' ||
-      email === '';
-
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          value={email}
-          onChange={event => this.setState(updateByPropertyName('email', event.target.value))}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          value={password}
-          onChange={event => this.setState(updateByPropertyName('password', event.target.value))}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
+      <div>
+      <p>{this.state.user ? `Hi, ${this.state.user.displayName}!` : 'Hi!'}</p>
+        <button onClick={this.login.bind(this)}>
+          Login with Facebook
         </button>
 
-        { error && <p>{error.message}</p> }
-      </form>
+        <button onClick={this.logout.bind(this)}>
+          Logout
+        </button>
+        </div>
     );
   }
 }

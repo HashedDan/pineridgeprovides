@@ -10,12 +10,12 @@ const prodConfig = {
 };
 
 const devConfig = {
-  apiKey: 'AIzaSyBPVL-vhOE3_Dy1xkmVzJ7H9TnL0myFJc8',
-  authDomain: 'pineridgeprovides.firebaseapp.com',
-  databaseURL: 'https://pineridgeprovides.firebaseio.com',
-  projectId: 'pineridgeprovides',
-  storageBucket: '',
-  messagingSenderId: '20117640254',
+  apiKey: "AIzaSyBPVL-vhOE3_Dy1xkmVzJ7H9TnL0myFJc8",
+  authDomain: "pineridgeprovides.firebaseapp.com",
+  databaseURL: "https://pineridgeprovides.firebaseio.com",
+  projectId: "pineridgeprovides",
+  storageBucket: "pineridgeprovides.appspot.com",
+  messagingSenderId: "20117640254"
 };
 
 const config = process.env.NODE_ENV === 'production'
@@ -27,9 +27,11 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.database();
-const auth = firebase.auth.FacebookAuthProvider();
+const auth = firebase.auth();
+const provider = new firebase.auth.FacebookAuthProvider();
 
 export {
   db,
   auth,
+  provider
 };
