@@ -11,10 +11,10 @@ import './bootstrap.min.css';
 const TemplateWrapper = ({ children }) => (
   <div>
     <Helmet
-      title="Gatsby Firebase Authentication"
+      title="Pine Ridge Provides"
       meta={[
-        { name: 'description', content: 'Gatsby Firebase Authentication' },
-        { name: 'keywords', content: 'Gatsby Firebase Authentication' },
+        { name: 'description', content: 'Pine Ridge Provides' },
+        { name: 'keywords', content: 'Pine Ridge Provides' },
       ]}
     />
     <div className="app">

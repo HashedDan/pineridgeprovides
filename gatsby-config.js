@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Firebase Authentication`,
+    title: `Pine Ridge Provides`,
   },
   plugins: [`gatsby-plugin-react-helmet`],
 }
