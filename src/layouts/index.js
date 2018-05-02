@@ -6,6 +6,7 @@ import Navigation from '../components/Navigation';
 import withAuthentication from '../components/Session/withAuthentication';
 
 import './index.css';
+import './bootstrap.min.css';
 
 const TemplateWrapper = ({ children }) => (
   <div>
@@ -18,8 +19,6 @@ const TemplateWrapper = ({ children }) => (
     />
     <div className="app">
       <Navigation />
-
-      <hr/>
 
       {children()}
     </div>

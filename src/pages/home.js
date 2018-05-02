@@ -13,35 +13,43 @@ class HomePage extends Component {
     super(props);
 
     this.state = {
-      users: []
+      requests: []
     };
   }
 
   componentDidMount() {
-    db.onceGetUsers().then(snapshot =>
-      this.setState(() => ({ users: fromObjectToList(snapshot.val()) }))
+    db.onceGetRequests().then(snapshot =>
+      this.setState(() => ({ requests: fromObjectToList(snapshot.val()) }))
     );
   }
 
   render() {
-    const { users } = this.state;
+    const { requests } = this.state;
 
     return (
       <div>
-        <h1>Home</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
+        <h1>Recent Requests</h1>
+        <p>These are the items most needed by others in your community.</p>
 
-        { !!users.length && <UserList users={users} /> }
+        { !!requests.length && <RequestList requests={requests} /> }
       </div>
     );
   }
 }
 
-const UserList = ({ users }) =>
+const RequestList = ({ requests }) =>
   <div>
-    <h2>List of App User IDs (Saved on Sign Up in Firebase Database)</h2>
-    {users.map(user =>
-      <div key={user.index}>{user.index}</div>
+    {requests.map(request =>
+      <div key={request.index} className="card">
+        <div className="card-body">
+          <h5 className="card-title">{request.title}</h5>
+          <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          {request.status == "unclaimed" ?
+            <a href="#" className="btn btn-success">Claim</a>
+            : <a href="#" className="btn btn-warning disabled">In Progress</a>
+          }
+        </div>
+      </div>
     )}
   </div>
 

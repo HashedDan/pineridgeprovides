@@ -3,8 +3,8 @@ import React from 'react';
 import SignInForm from '../components/SignIn';
 
 const SignInPage = () =>
-  <div>
-    <h1>SignIn</h1>
+  <div className="jumbotron col-8">
+    <h1 className="display-4">Sign In</h1>
     <SignInForm />
   </div>
 

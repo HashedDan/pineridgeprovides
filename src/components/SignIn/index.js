@@ -19,9 +19,14 @@ class SignInForm extends Component {
   }
 
   async login() {
+    const {
+      history,
+    } = this.props;
+
     const result = await auth.signInWithPopup(provider)
     this.setState({user: result.user});
     db.doCreateUser(result.user.uid, result.user.displayName, result.user.email)
+    history.push(routes.HOME);
   }
 
   async logout() {
@@ -39,13 +44,8 @@ class SignInForm extends Component {
   render() {
     return (
       <div>
-      <p>{this.state.user ? `Hi, ${this.state.user.displayName}!` : 'Hi!'}</p>
-        <button onClick={this.login.bind(this)}>
+        <button onClick={this.login.bind(this)} className="btn btn-primary">
           Login with Facebook
-        </button>
-
-        <button onClick={this.logout.bind(this)}>
-          Logout
         </button>
         </div>
     );

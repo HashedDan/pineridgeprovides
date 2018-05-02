@@ -12,3 +12,16 @@ export const onceGetUsers = () =>
   db.ref('users').once('value');
 
 // Other db APIs ...
+
+export const doCreateRequest = (title, description, directions, owner, status, claimer) =>
+  db.ref(`requests/`).push({
+    title,
+    description,
+    directions,
+    owner,
+    status,
+    claimer
+  });
+
+export const onceGetRequests = () =>
+  db.ref('requests').once('value');
