@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import withAuthorization from '../components/Session/withAuthorization';
 import { db } from '../firebase';
@@ -9,11 +10,12 @@ const fromObjectToList = (object) =>
     : [];
 
 class HomePage extends Component {
-  constructor(props) {
+  constructor(props, { authUser }) {
     super(props);
-
+    console.log(authUser);
     this.state = {
-      requests: []
+      requests: [],
+      authUser: authUser,
     };
   }
 
@@ -24,26 +26,31 @@ class HomePage extends Component {
   }
 
   render() {
-    const { requests } = this.state;
+    const { requests, authUser } = this.state;
 
     return (
       <div>
         <h1>Recent Requests</h1>
         <p>These are the items most needed by others in your community.</p>
 
-        { !!requests.length && <RequestList requests={requests} /> }
+        { !!requests.length && <RequestList requests={requests} authUser={authUser} /> }
       </div>
     );
   }
 }
 
-const RequestList = ({ requests }) =>
+const RequestList = ({ requests, authUser }) =>
   <div>
     {requests.map(request =>
       <div key={request.index} className="card">
         <div className="card-body">
           <h5 className="card-title">{request.title}</h5>
-          <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          {request.owner == authUser.uid ?
+            <p style={{color: 'red'}}><i>This is your request.</i></p>
+            : <p></p>
+          }
+          <p className="card-text"> Description: { request.description }</p>
+          <p className="card-text"> Directions: { request.directions }</p>
           {request.status == "unclaimed" ?
             <a href="#" className="btn btn-success">Claim</a>
             : <a href="#" className="btn btn-warning disabled">In Progress</a>
@@ -52,6 +59,10 @@ const RequestList = ({ requests }) =>
       </div>
     )}
   </div>
+
+HomePage.contextTypes = {
+  authUser: PropTypes.object,
+};
 
 const authCondition = (authUser) => !!authUser;
 
