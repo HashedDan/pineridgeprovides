@@ -25,3 +25,17 @@ export const doCreateRequest = (title, description, directions, owner, status, c
 
 export const onceGetRequests = () =>
   db.ref('requests').once('value');
+
+
+export const doClaimRequest = (id, status, claimer) => {
+  db.ref(`requests/${id}`).update({
+    status,
+    claimer
+  });
+}
+
+export const doFinishRequest = (id, status) => {
+  db.ref(`requests/${id}`).update({
+    status
+  });
+}

@@ -18,7 +18,7 @@ class CreatePage extends Component {
       description: '',
       directions: '',
       owner: authUser.uid,
-      status: '',
+      status: 'Submitted',
       claimer: '',
       error: null
     };
